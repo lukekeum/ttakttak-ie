@@ -11,10 +11,18 @@ export default class Information {
   @Execute
   public execute(message: Message, args: TArguments) {
     let user: User;
-    if ((args as Array<string>).length > 0 && args) {
-      user = this.getUserFromMention(args[0]);
-    } else {
-      user = message.author;
+    try {
+      if ((args as Array<string>).length > 0 && args) {
+        user = this.getUserFromMention(args[0]);
+      } else {
+        user = message.author;
+      }
+    } catch (err) {
+      if (err.message === 'Mention not found')
+        message.channel.send('정보를 보고자 하는 유저를 맨션해주세요');
+      if (err.message === 'User not found')
+        message.channel.send('해당 유저를 찾을 수 없습니다');
+      return;
     }
 
     message.channel.send(this.genEmbed(user));
