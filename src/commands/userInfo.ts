@@ -1,5 +1,4 @@
 import { Message, MessageEmbed, User } from 'discord.js';
-import { format } from 'path';
 import bot from '../client';
 import Command, { Execute, TArguments } from '../lib/commandManager';
 

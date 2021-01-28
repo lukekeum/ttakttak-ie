@@ -1,5 +1,5 @@
 import { Message, MessageEmbed } from 'discord.js';
-import Command, { Execute, TArguments } from '../lib/commandManager';
+import Command, { Execute } from '../lib/commandManager';
 import fetch, { RequestInit } from 'node-fetch';
 
 interface IResponse {
