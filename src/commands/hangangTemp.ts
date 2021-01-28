@@ -24,6 +24,7 @@ export default class HangangTemp {
       if (responseOK) {
         const messageEmbed = new MessageEmbed()
           .setTitle('한강수온')
+          .setColor('#303136')
           .setDescription(`현재 한강 물의 온도는 **${data.temp}도**입니다`)
           .setFooter('최근측정시각', String(msg.author.avatarURL()))
           .setTimestamp(new Date(data.time));

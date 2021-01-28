@@ -30,14 +30,14 @@ export default class Information {
 
   public genEmbed(user: User): MessageEmbed {
     const { username, tag, createdAt } = user;
-    const { getFullYear, getMonth, getDate, getHours, getMinutes } = createdAt;
 
-    const date = `${getFullYear()}년 ${
-      getMonth() + 1
-    }월 ${getDate()}일 ${getHours()}시 ${getMinutes()}분`;
+    const date = `${createdAt.getFullYear()}년 ${
+      createdAt.getMonth() + 1
+    }월 ${createdAt.getDate()}일 ${createdAt.getHours()}시 ${createdAt.getMinutes()}분`;
 
     const embed = new MessageEmbed()
       .setTitle(`${username}님의 정보`)
+      .setColor('#303136')
       .setThumbnail(`${user.displayAvatarURL({ dynamic: true })}`)
       .addField('디스코드 태그', tag, false)
       .addField('탄생일', date, false);
