@@ -2,13 +2,9 @@ import Discord, { Client, ClientEvents, Collection, Message } from 'discord.js';
 import { readdirSync } from 'fs';
 
 type TArgument = Array<string> | null;
-type TExecute<T = void> = ({ message, args }: ICommandParam) => T;
+type TExecute<T = void> = (message: Message, args: TArgument) => T;
 type TEventExecute = (...args: any[]) => void;
 
-interface ICommandParam {
-  message: Message;
-  args: TArgument;
-}
 interface ICommand {
   command: Array<string> | string;
   execute: TExecute<void>;
@@ -21,20 +17,20 @@ interface IEvent {
 class Bot {
   public client: Client;
 
-  private commands: Collection<string, TExecute>;
   private prefix: string;
+  private commands = new Collection<string, TExecute>();
 
   constructor() {
     // Setup default class values
     this.client = new Discord.Client();
-    this.prefix = process.env.PREFIX || '::';
+    this.prefix = String(process.env.PREFIX || '::');
 
     // Register handler
     this.handleCommand();
     this.handleEvent();
 
     // Add command to commandChecker
-    this.client.on('message', this.commandChecker);
+    this.client.on('message', this.commandChecker.bind(this));
   }
 
   public login() {
@@ -53,7 +49,6 @@ class Bot {
 
     for (const file of commandFiles) {
       const Command = require(`./commands/${file}`).default;
-      if (typeof Command === 'function') continue;
 
       // Make command object
       const { command: cmd, execute }: ICommand = new Command();
@@ -84,20 +79,20 @@ class Bot {
     }
   }
 
-  public async commandChecker(message: Message) {
+  private async commandChecker(message: Message) {
     if (!message.content.startsWith(this.prefix) || message.author.bot) return;
 
     const args = message.content.slice(this.prefix.length).trim().split(/ +/);
     const command = args?.shift()?.toLocaleLowerCase() || '';
 
     if (!this.commands.has(command)) {
-      message.reply('올바른 명령어를 입력해줘');
+      // TODO: Add help command
       return;
     }
 
     try {
       const func = this.commands.get(command) || function () {};
-      await func({ message, args });
+      await func(message, args);
     } catch (err) {
       message.reply('에러가 발생했어');
       console.error(err);
