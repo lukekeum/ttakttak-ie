@@ -16,7 +16,7 @@ export default class HangangTemp {
     const options: RequestInit = {
       method: 'GET',
     };
-    const msg = await message.channel.send('잠시만 기달려주세요');
+    const msg = await message.channel.send('잠시만 기다려주세요');
     try {
       const response = await fetch(url, options);
       const responseOK = response && response.ok;
