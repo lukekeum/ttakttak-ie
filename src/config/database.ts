@@ -1,16 +1,19 @@
-import { ConnectionOptions } from 'typeorm';
-import entities from '../entity';
+import { connect, disconnect, ConnectOptions } from 'mongoose';
 
-const connectionOptions: ConnectionOptions = {
-  entities,
-  type: 'postgres',
-  database: process.env.TYPEORM_DATABASE,
-  username: process.env.TYPEORM_USERNAME,
-  password: process.env.TYPEORM_PASSWORD,
-  dropSchema: true,
-  port: 5432,
-  synchronize: process.env.TYPEORM_SYNCHRONIZE === 'true',
-  logging: process.env.TYPEORM_LOGGING === 'true',
-};
+export default class Database {
+  public async connect(options: ConnectOptions): Promise<any> {
+    const { MONGO_URI } = process.env;
+    if (!MONGO_URI) throw new Error('MongoURI not found');
 
-export default connectionOptions;
+    try {
+      await connect(MONGO_URI, options);
+      console.log('Database Connected');
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  public disconnect() {
+    return disconnect();
+  }
+}
