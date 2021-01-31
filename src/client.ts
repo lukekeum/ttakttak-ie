@@ -10,7 +10,7 @@ interface ICommand {
   execute: TExecute<void>;
 }
 interface IEvent {
-  eventType: keyof ClientEvents;
+  event: keyof ClientEvents;
   execute: TEventExecute;
 }
 
@@ -71,11 +71,10 @@ class Bot {
 
     for (const file of eventFiles) {
       const Event = require(`./events/${file}`).default;
-      if (typeof Event === 'function') continue;
 
       // Make event object
-      const { eventType, execute }: IEvent = new Event();
-      this.client.on(eventType, execute);
+      const { event, execute }: IEvent = new Event();
+      this.client.on(event, execute);
     }
   }
 
