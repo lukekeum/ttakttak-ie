@@ -1,11 +1,38 @@
 import { Guild } from 'discord.js';
-import { Execute } from '../lib/commandManager';
-import Event from '../lib/eventManager';
+import Event, { Execute } from '../lib/eventManager';
+
+import GuildModel, { IGuild } from '../model/guild.model';
+
+interface IGuildInput {
+  id: IGuild['id'];
+  users: IGuild['users'];
+  channels: IGuild['channels'];
+}
 
 @Event('guildCreate')
 export default class GuildCreate {
   @Execute
-  public execute(guild: Guild) {
-    // TODO: Add guild_data to database
+  public async execute(guild: Guild) {
+    // Add guild_data to database
+    console.log('Event executed');
+    try {
+      const findGuild = await GuildModel.findOne({ id: guild.id });
+
+      if (findGuild) return;
+
+      const channel = guild.channels.cache.find(
+        (channel) => channel.type === 'text' || channel.type === 'news'
+      );
+      if (!channel) return;
+
+      const guildInput = new GuildModel({
+        id: guild.id,
+        channels: [{ type: 'patch-channel', id: channel.id }],
+      } as IGuildInput);
+
+      await guildInput.save();
+    } catch (err) {
+      console.error(err);
+    }
   }
 }
