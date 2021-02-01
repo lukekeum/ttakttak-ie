@@ -65,9 +65,10 @@ class Bot {
 
   private handleEvent() {
     const eventDir = './src/events';
-    const eventFiles = readdirSync(eventDir).filter((file) => {
-      file.endsWith('.ts');
-    });
+    const eventFiles = readdirSync(eventDir).filter((file) =>
+      file.endsWith('.ts')
+    );
+    console.log(eventFiles);
 
     for (const file of eventFiles) {
       const Event = require(`./events/${file}`).default;
