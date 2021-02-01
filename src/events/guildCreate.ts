@@ -13,16 +13,23 @@ interface IGuildInput {
 export default class GuildCreate {
   @Execute
   public async execute(guild: Guild) {
+    console.log('runned');
     // Add guild_data to database
     try {
       const findGuild = await GuildModel.findOne({ id: guild.id });
 
-      if (findGuild) return;
+      if (findGuild) {
+        console.log(2);
+        return;
+      }
 
       const channel = guild.channels.cache.find(
         (channel) => channel.type === 'text' || channel.type === 'news'
       );
-      if (!channel) return;
+      if (!channel) {
+        console.log(1);
+        return;
+      }
 
       const guildInput = new GuildModel({
         id: guild.id,
