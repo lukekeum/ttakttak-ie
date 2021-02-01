@@ -30,6 +30,8 @@ export default class GuildCreate {
       } as IGuildInput);
 
       await guildInput.save();
+
+      console.log('Data saved');
     } catch (err) {
       console.error(err);
     }
