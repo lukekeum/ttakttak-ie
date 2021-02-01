@@ -14,7 +14,6 @@ export default class GuildCreate {
   @Execute
   public async execute(guild: Guild) {
     // Add guild_data to database
-    console.log('Event executed');
     try {
       const findGuild = await GuildModel.findOne({ id: guild.id });
 
