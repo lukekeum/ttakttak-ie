@@ -1,7 +1,7 @@
 import { Guild, Message, MessageEmbed, TextChannel } from 'discord.js';
 import bot from '../client';
 import Command, { Execute, TArguments } from '../lib/commandManager';
-import guildModel, { IGuild } from '../model/guild.model';
+import guildModel, { EChannelType, IGuild } from '../model/guild.model';
 import userModel, { IUser } from '../model/user.model';
 
 interface INoticeForm {
@@ -48,7 +48,7 @@ export default class Notice {
         for (const guildData of guilds) {
           const guildID = guildData.id;
           const channelID = guildData.channels.find(
-            (channel) => channel.type === 'patch-channel'
+            (channel) => channel.type === EChannelType.NOTICE
           )?.id;
           const guild = client.guilds.cache.find(
             (guild) => guild.id === guildID
@@ -71,6 +71,7 @@ export default class Notice {
     const { title, description, content } = this.NoticeForm;
     const client = bot.client;
     const embed = new MessageEmbed()
+      .setColor('#ff5447')
       .setTitle(title)
       .setDescription(description)
       .setFooter(this.message.author.tag, `${client.user!.displayAvatarURL()}`);

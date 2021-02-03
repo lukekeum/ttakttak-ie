@@ -17,11 +17,15 @@ export interface IGuild extends Document {
   channels: Array<IGuildRoom>;
 }
 
+export enum EChannelType {
+  NOTICE = 'notice',
+}
+
 const GuildSchema: Schema = new Schema({
   id: { type: String, required: true, unique: true },
   channels: [
     {
-      type: { type: String, required: true, unique: true },
+      type: { type: Number, required: true, unique: true },
       id: { type: String, required: true, unique: true },
     },
   ],

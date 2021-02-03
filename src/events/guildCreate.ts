@@ -1,7 +1,7 @@
 import { Guild } from 'discord.js';
 import Event, { Execute } from '../lib/eventManager';
 
-import GuildModel, { IGuild } from '../model/guild.model';
+import GuildModel, { EChannelType, IGuild } from '../model/guild.model';
 
 interface IGuildInput {
   id: IGuild['id'];
@@ -26,7 +26,7 @@ export default class GuildCreate {
 
       const guildInput = new GuildModel({
         id: guild.id,
-        channels: [{ type: 'patch-channel', id: channel.id }],
+        channels: [{ type: EChannelType.NOTICE, id: channel.id }],
       } as IGuildInput);
 
       await guildInput.save();
