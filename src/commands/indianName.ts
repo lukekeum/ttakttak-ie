@@ -1,4 +1,5 @@
 import { Message, MessageEmbed } from 'discord.js';
+import logger from '../config/logger';
 import Command, { Execute, TArguments } from '../lib/commandManager';
 
 @Command(['인디언이름'])
