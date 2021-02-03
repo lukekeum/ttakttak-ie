@@ -34,7 +34,7 @@ export default class Notice {
 
       if (command === '제목' || command === '부제' || command === '내용') {
         this.setValue(command, args);
-        logger.debug(this.NoticeForm);
+        logger.debug(JSON.stringify(this.NoticeForm));
         return;
       }
 
