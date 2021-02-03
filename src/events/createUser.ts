@@ -10,6 +10,8 @@ export default class CreateUser {
     try {
       const findUser = await userModel.findOne({ id: message.author.id });
 
+      if (message.author.bot) return;
+
       if (findUser) return;
 
       const userInput = new userModel({
