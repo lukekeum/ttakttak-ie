@@ -1,4 +1,5 @@
-import { Message } from 'discord.js';
+import { Guild, Message, MessageEmbed, TextChannel } from 'discord.js';
+import bot from '../client';
 import Command, { Execute, TArguments } from '../lib/commandManager';
 import guildModel, { IGuild } from '../model/guild.model';
 import userModel, { IUser } from '../model/user.model';
@@ -14,6 +15,7 @@ type TValue = '제목' | '부제' | '내용';
 @Command(['공지'])
 export default class Notice {
   private NoticeForm: INoticeForm = {};
+  private message: Message;
 
   constructor() {
     this.execute = this.execute.bind(this);
@@ -35,12 +37,45 @@ export default class Notice {
         return;
       }
 
+      this.message = message;
+
       if (command === '보내기') {
-        // TODO: Send message to all servers
+        // Send message to all guilds
+        const client = bot.client;
+
+        const guilds: Array<IGuild> = await guildModel.find();
+
+        for (const guildData of guilds) {
+          const guildID = guildData.id;
+          const channelID = guildData.channels.find(
+            (channel) => channel.type === 'patch-channel'
+          )?.id;
+          const guild = client.guilds.cache.find(
+            (guild) => guild.id === guildID
+          );
+          if (!guild) continue;
+
+          const channel = guild.channels.cache.find(
+            (channel) => channel.id === channelID
+          ) as TextChannel;
+
+          channel.send(this.genEmbed());
+        }
       }
     } catch (err) {
       console.error(err);
     }
+  }
+
+  private genEmbed(): MessageEmbed {
+    const { title, description, content } = this.NoticeForm;
+    const client = bot.client;
+    const embed = new MessageEmbed()
+      .setTitle(title)
+      .setDescription(description)
+      .setFooter(this.message.author.tag, `${client.user!.displayAvatarURL()}`);
+
+    return embed;
   }
 
   private setValue(type: TValue, args: string[]) {
