@@ -25,6 +25,10 @@ export default class IndianName {
       .setDescription(`그 날의 이름은 ||${result}||입니다`);
 
     message.channel.send(embed);
+
+    logger.info(
+      `${message.guild!.id} - ${message.author.id} -> ${message.content}`
+    );
   }
 }
 

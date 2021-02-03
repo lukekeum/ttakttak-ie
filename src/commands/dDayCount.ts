@@ -1,4 +1,5 @@
 import { Message, MessageEmbed } from 'discord.js';
+import logger from '../config/logger';
 import Command, { Execute, TArguments } from '../lib/commandManager';
 
 @Command(['디데이', 'dday'])
@@ -41,6 +42,10 @@ export default class DDayCount {
     }
 
     const embed = new MessageEmbed().setTitle(dday).setDescription(description);
+
+    logger.info(
+      `${message.guild!.id} - ${message.author.id} -> ${message.content}`
+    );
 
     return message.channel.send(embed);
   }

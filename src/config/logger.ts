@@ -1,35 +1,28 @@
-import winston from 'winston';
+import { createLogger, transports, format } from 'winston';
 
-const { combine, timestamp, printf } = winston.format;
-
-// Define log format
-const logFormat = printf((info) => {
-  return `${info.timestamp} ${info.level}: ${info.message}`;
-});
-
-/*
- * Log Level
- * error: 0, warn: 1, info: 2, http: 3, verbose: 4, debug: 5, silly: 6
- */
-const logger = winston.createLogger({
-  format: combine(
-    timestamp({
-      format: 'YYYY-MM-DD HH:mm:ss',
-    }),
-    logFormat
-  ),
-  transports: [],
-});
-
-if (process.env.NODE_ENV === 'development') {
-  logger.add(
-    new winston.transports.Console({
-      format: winston.format.combine(
-        winston.format.colorize(),
-        winston.format.simple()
-      ),
-    })
-  );
+interface TransformableInfo {
+  level: string;
+  message: string;
+  [key: string]: any;
 }
+
+const logger = createLogger({
+  transports: [
+    new transports.Console({
+      level: 'debug',
+      format: format.combine(
+        format.label({ label: '[ttakttak-ie]' }),
+        format.timestamp({
+          format: 'YYYY-MM-DD HH:mm:ss',
+        }),
+        format.colorize(),
+        format.printf(
+          (info: TransformableInfo) =>
+            `${info.timestamp} - ${info.level}: ${info.label} ${info.message}`
+        )
+      ),
+    }),
+  ],
+});
 
 export default logger;

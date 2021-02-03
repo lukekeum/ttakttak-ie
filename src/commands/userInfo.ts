@@ -1,5 +1,6 @@
 import { Message, MessageEmbed, User } from 'discord.js';
 import bot from '../client';
+import logger from '../config/logger';
 import Command, { Execute, TArguments } from '../lib/commandManager';
 
 @Command(['정보'])
@@ -26,6 +27,10 @@ export default class Information {
     }
 
     message.channel.send(this.genEmbed(user));
+
+    logger.info(
+      `${message.guild!.id} - ${message.author.id} -> ${message.content}`
+    );
   }
 
   public genEmbed(user: User): MessageEmbed {

@@ -1,5 +1,6 @@
 import { Guild, Message, MessageEmbed, TextChannel } from 'discord.js';
 import bot from '../client';
+import logger from '../config/logger';
 import Command, { Execute, TArguments } from '../lib/commandManager';
 import guildModel, { EChannelType, IGuild } from '../model/guild.model';
 import userModel, { IUser } from '../model/user.model';
@@ -33,7 +34,6 @@ export default class Notice {
 
       if (command === '제목' || command === '부제' || command === '내용') {
         this.setValue(command, args);
-        console.log(this.NoticeForm);
         return;
       }
 
@@ -62,8 +62,11 @@ export default class Notice {
           channel.send(this.genEmbed());
         }
       }
+      logger.info(
+        `${message.guild!.id} - ${message.author.id} -> ${message.content}`
+      );
     } catch (err) {
-      console.error(err);
+      logger.error(err);
     }
   }
 

@@ -1,4 +1,5 @@
 import { connect, disconnect, ConnectOptions } from 'mongoose';
+import logger from './logger';
 
 export default class Database {
   public async connect(options: ConnectOptions): Promise<any> {
@@ -7,9 +8,9 @@ export default class Database {
 
     try {
       await connect(MONGO_URI, options);
-      console.log('Database Connected');
+      logger.info('Database connected with mongoose');
     } catch (err) {
-      console.error(err);
+      logger.error(err);
     }
   }
 

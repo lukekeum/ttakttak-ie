@@ -1,5 +1,6 @@
 import Discord, { Client, ClientEvents, Collection, Message } from 'discord.js';
 import { readdirSync } from 'fs';
+import logger from './config/logger';
 
 type TArgument = Array<string> | null;
 type TExecute<T = void> = (message: Message, args: TArgument) => T;
@@ -38,7 +39,9 @@ class Bot {
     const { TOKEN } = process.env;
     if (!TOKEN) throw new Error('There are no token inside your env file');
 
-    this.client.login(TOKEN).then(() => console.log('Bot is running now')); // Login client with process.env.TOKEN
+    this.client
+      .login(TOKEN)
+      .then(() => logger.info('Discord bot is running now')); // Login client with process.env.TOKEN
   }
 
   private handleCommand() {
@@ -94,7 +97,7 @@ class Bot {
       await func(message, args);
     } catch (err) {
       message.reply('에러가 발생했어');
-      console.error(err);
+      logger.error(err);
     }
   }
 }

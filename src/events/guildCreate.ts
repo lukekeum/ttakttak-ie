@@ -1,11 +1,11 @@
 import { Guild } from 'discord.js';
+import logger from '../config/logger';
 import Event, { Execute } from '../lib/eventManager';
 
 import GuildModel, { EChannelType, IGuild } from '../model/guild.model';
 
 interface IGuildInput {
   id: IGuild['id'];
-  users: IGuild['users'];
   channels: IGuild['channels'];
 }
 
@@ -30,8 +30,10 @@ export default class GuildCreate {
       } as IGuildInput);
 
       await guildInput.save();
+
+      logger.info(`${guild.name}(${guild.id}) data created`);
     } catch (err) {
-      console.error(err);
+      logger.error(err);
     }
   }
 }

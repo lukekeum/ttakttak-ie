@@ -1,4 +1,5 @@
 import { Message } from 'discord.js';
+import logger from '../config/logger';
 import Event, { Execute } from '../lib/eventManager';
 import userModel, { IUser } from '../model/user.model';
 
@@ -16,8 +17,10 @@ export default class CreateUser {
       } as IUser);
 
       await userInput.save();
+
+      logger.info(`${message.author.tag}(${message.author.id}) data created`);
     } catch (err) {
-      console.error(err);
+      logger.error(err);
     }
   }
 }
