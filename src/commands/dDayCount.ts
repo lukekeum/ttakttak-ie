@@ -1,5 +1,6 @@
 import { Message, MessageEmbed } from 'discord.js';
 import Command, { Execute, TArguments } from '../lib/commandManager';
+import convertDate from '../lib/date';
 
 @Command(['디데이', 'dday'])
 export default class DDayCount {
@@ -46,7 +47,7 @@ export default class DDayCount {
   }
 
   private counter(date: Date): number {
-    const now = new Date();
+    const now = convertDate(new Date());
     const distance = date.getTime() - now.getTime();
 
     const resultDay = Math.floor(distance / (1000 * 60 * 60 * 24));
