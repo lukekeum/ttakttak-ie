@@ -7,11 +7,10 @@ import userModel, { IUser } from '../model/user.model';
 
 interface INoticeForm {
   title?: string;
-  description?: string;
   content?: string;
 }
 
-type TValue = '제목' | '부제' | '내용';
+type TValue = '제목' | '내용';
 
 @Command(['공지'])
 export default class Notice {
@@ -32,7 +31,7 @@ export default class Notice {
 
       const command = args[0];
 
-      if (command === '제목' || command === '부제' || command === '내용') {
+      if (command === '제목' || command === '내용') {
         this.setValue(command, args);
         logger.debug(JSON.stringify(this.NoticeForm));
         return;
@@ -69,13 +68,17 @@ export default class Notice {
   }
 
   private genEmbed(): MessageEmbed {
-    const { title, description, content } = this.NoticeForm;
+    const { title, content } = this.NoticeForm;
     const client = bot.client;
     const embed = new MessageEmbed()
+      .setAuthor('택택이 디스코드 봇', `${client.user!.displayAvatarURL()}`)
       .setColor('#ff5447')
       .setTitle(title)
-      .setDescription(description)
-      .setFooter(this.message.author.tag, `${client.user!.displayAvatarURL()}`);
+      .setDescription(content)
+      .setFooter(
+        `${this.message.author.tag} 보냄`,
+        `${client.user!.displayAvatarURL()}`
+      );
 
     return embed;
   }
@@ -86,9 +89,6 @@ export default class Notice {
     switch (type) {
       case '제목':
         this.NoticeForm.title = content;
-        return;
-      case '부제':
-        this.NoticeForm.description = content;
         return;
       case '내용':
         this.NoticeForm.content = content;
