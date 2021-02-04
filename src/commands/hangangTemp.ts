@@ -32,10 +32,6 @@ export default class HangangTemp {
 
         await msg.delete();
         message.channel.send(messageEmbed);
-
-        logger.info(
-          `${message.guild!.id} - ${message.author.id} -> ${message.content}`
-        );
       }
     } catch (err) {
       console.error(err);

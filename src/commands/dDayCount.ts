@@ -43,10 +43,6 @@ export default class DDayCount {
 
     const embed = new MessageEmbed().setTitle(dday).setDescription(description);
 
-    logger.info(
-      `${message.guild!.id} - ${message.author.id} -> ${message.content}`
-    );
-
     return message.channel.send(embed);
   }
 

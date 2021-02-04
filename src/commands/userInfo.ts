@@ -27,10 +27,6 @@ export default class Information {
     }
 
     message.channel.send(this.genEmbed(user));
-
-    logger.info(
-      `${message.guild!.id} - ${message.author.id} -> ${message.content}`
-    );
   }
 
   public genEmbed(user: User): MessageEmbed {

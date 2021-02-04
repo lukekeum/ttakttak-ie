@@ -63,9 +63,6 @@ export default class Notice {
           channel.send(this.genEmbed());
         }
       }
-      logger.info(
-        `${message.guild!.id} - ${message.author.id} -> ${message.content}`
-      );
     } catch (err) {
       logger.error(err);
     }
