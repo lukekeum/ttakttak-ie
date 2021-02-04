@@ -31,10 +31,10 @@ export default class HangangTemp {
           .setTimestamp(new Date(data.time));
 
         await msg.delete();
-        message.channel.send(messageEmbed);
+        return message.channel.send(messageEmbed);
       }
     } catch (err) {
-      console.error(err);
+      logger.error(err);
       await msg.edit('오류가 발생했습니다. 개발자에게 문의해주세요');
     }
   }

@@ -1,7 +1,6 @@
 import { Message, MessageEmbed, User } from 'discord.js';
-import bot from '../client';
-import logger from '../config/logger';
 import Command, { Execute, TArguments } from '../lib/commandManager';
+import bot from '../client';
 
 @Command(['정보'])
 export default class Information {
@@ -26,7 +25,7 @@ export default class Information {
       return;
     }
 
-    message.channel.send(this.genEmbed(user));
+    return message.channel.send(this.genEmbed(user));
   }
 
   public genEmbed(user: User): MessageEmbed {

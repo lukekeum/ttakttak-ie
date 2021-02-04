@@ -1,4 +1,4 @@
-import { Guild, Message, MessageEmbed, TextChannel } from 'discord.js';
+import { Message, MessageEmbed, TextChannel } from 'discord.js';
 import bot from '../client';
 import logger from '../config/logger';
 import Command, { Execute, TArguments } from '../lib/commandManager';
@@ -60,7 +60,7 @@ export default class Notice {
             (channel) => channel.id === channelID
           ) as TextChannel;
 
-          channel.send(this.genEmbed());
+          return channel.send(this.genEmbed());
         }
       }
     } catch (err) {

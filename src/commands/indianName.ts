@@ -1,5 +1,4 @@
 import { Message, MessageEmbed } from 'discord.js';
-import logger from '../config/logger';
 import Command, { Execute, TArguments } from '../lib/commandManager';
 
 @Command(['인디언이름'])
@@ -25,7 +24,7 @@ export default class IndianName {
       .setTitle(`${year}년 ${month}월 ${date}일의 인디언 이름입니다`)
       .setDescription(`그 날의 이름은 ||${result}||입니다`);
 
-    message.channel.send(embed);
+    return message.channel.send(embed);
   }
 }
 
