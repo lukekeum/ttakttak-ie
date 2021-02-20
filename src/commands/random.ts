@@ -1,5 +1,5 @@
 import Command, { Execute, TArguments } from '../lib/commandManager';
-import { Message, User } from 'discord.js';
+import { Guild, Message, User } from 'discord.js';
 import userModel, { IUser } from '../model/user.model';
 import CreateUser from '../events/createUser';
 import logger from '../config/logger';
@@ -93,9 +93,9 @@ export default class Random {
     }
   }
 
-  private getUserByID(id: string) {
-    const user = bot.client.users.cache.find((usr) => usr.id === id);
-    return user;
+  private getUserByID(guild: Guild, id: string) {
+    const guildMembers = guild.members.cache.find((usr) => usr.id === id);
+    return guildMembers;
   }
 
   private async userRank(message: Message) {
@@ -110,12 +110,14 @@ export default class Random {
       let number = 0;
 
       for (let i = 0; i < sortedByPoint.length; i++) {
-        const user = this.getUserByID(sortedByPoint[i].id);
-        if (!user) continue;
+        const user = this.getUserByID(message.guild!, sortedByPoint[i].id);
+        if (!user) {
+          continue;
+        }
         number += 1;
         rankMessage =
           rankMessage +
-          `[${number}] ${user.username} -> ${sortedByPoint[i].point}점\r\n`;
+          `[${number}] ${user?.nickname} -> ${sortedByPoint[i].point}점\r\n`;
         if (number >= 15) {
           return;
         }
