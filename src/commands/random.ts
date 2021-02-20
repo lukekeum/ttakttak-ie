@@ -109,18 +109,14 @@ export default class Random {
 
       let number = 0;
 
-      for (let i = 0; i < sortedByPoint.length; i++) {
-        const user = this.getUserByID(message.guild!, sortedByPoint[i].id);
-        if (!user) {
-          continue;
-        }
+      for (const userData of sortedByPoint) {
+        if (!userData.tag) continue;
         number += 1;
         rankMessage =
           rankMessage +
-          `[${number}] ${user?.nickname} -> ${sortedByPoint[i].point}점\r\n`;
-        if (number >= 15) {
-          return;
-        }
+          `[${number}] ${userData.tag} -> ${userData.point}점\r\n`;
+
+        if (number >= 15) break;
       }
       rankMessage = rankMessage + '```';
 
