@@ -79,14 +79,14 @@ export default class Random {
 
   private async checkPoint(message: Message) {
     try {
-      const user: IUser = userModel.findOne({ id: message.author.id });
+      const user: IUser = await userModel.findOne({ id: message.author.id });
 
       if (!user) {
         return message.channel.send(`<@!${message.author.id}>님의 포인트: 0점`);
       }
 
       return message.channel.send(
-        `<@!${message.author.id}>님의 포인트: ${user.point}점`
+        `<@!${message.author.id}>님의 포인트: ${user.point || 0}점`
       );
     } catch (err) {
       logger.error(err);
