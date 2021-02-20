@@ -1,13 +1,19 @@
 import Command, { Execute, TArguments } from '../lib/commandManager';
-import { Message } from 'discord.js';
+import { Message, User } from 'discord.js';
 import userModel, { IUser } from '../model/user.model';
 import CreateUser from '../events/createUser';
 import logger from '../config/logger';
+import _ from 'lodash';
+import bot from '../client';
 
 @Command(['주사위'])
 export default class Random {
   constructor() {
     this.execute = this.execute.bind(this);
+    this.checkPoint = this.checkPoint.bind(this);
+    this.getUserByID = this.getUserByID.bind(this);
+    this.randomNumber = this.randomNumber.bind(this);
+    this.userRank = this.userRank.bind(this);
   }
 
   @Execute
@@ -20,6 +26,8 @@ export default class Random {
 
     if (args[0] === '점수') {
       return this.checkPoint(message);
+    } else if (args[0] === '순위') {
+      return this.userRank(message);
     }
 
     const num = Number(args[0]);
@@ -80,6 +88,36 @@ export default class Random {
       return message.channel.send(
         `<@!${message.author.id}>님의 포인트: ${user.point}점`
       );
+    } catch (err) {
+      logger.error(err);
+    }
+  }
+
+  private getUserByID(id: string) {
+    const user = bot.client.users.cache.find((usr) => usr.id === id);
+    return user;
+  }
+
+  private async userRank(message: Message) {
+    try {
+      const users = await userModel.find();
+      let rankMessage = '현재 포인트 순위입니다 \r\n```css\r\n';
+
+      const sortedByPoint: IUser[] = _.sortBy(users, 'point')
+        .filter((usr) => usr.point && usr.point !== 0)
+        .reverse()
+        .splice(0, 15);
+
+      for (let i = 0; i < sortedByPoint.length; i++) {
+        const user = this.getUserByID(sortedByPoint[i].id);
+        if (!user) continue;
+        rankMessage =
+          rankMessage +
+          `[${i + 1}] ${user.username} -> ${sortedByPoint[i].point}점\r\n`;
+      }
+      rankMessage = rankMessage + '```';
+
+      message.channel.send(rankMessage);
     } catch (err) {
       logger.error(err);
     }
