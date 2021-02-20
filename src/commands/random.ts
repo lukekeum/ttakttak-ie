@@ -105,15 +105,20 @@ export default class Random {
 
       const sortedByPoint: IUser[] = _.sortBy(users, 'point')
         .filter((usr) => usr.point && usr.point !== 0)
-        .reverse()
-        .splice(0, 15);
+        .reverse();
+
+      let number = 0;
 
       for (let i = 0; i < sortedByPoint.length; i++) {
         const user = this.getUserByID(sortedByPoint[i].id);
         if (!user) continue;
+        number += 1;
         rankMessage =
           rankMessage +
-          `[${i + 1}] ${user.username} -> ${sortedByPoint[i].point}점\r\n`;
+          `[${number}] ${user.username} -> ${sortedByPoint[i].point}점\r\n`;
+        if (number >= 15) {
+          return;
+        }
       }
       rankMessage = rankMessage + '```';
 
