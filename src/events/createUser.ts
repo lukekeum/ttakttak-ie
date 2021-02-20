@@ -16,6 +16,7 @@ export default class CreateUser {
 
       const userInput = new userModel({
         id: message.author.id,
+        tag: message.author.tag,
       } as IUser);
 
       await userInput.save();
