@@ -11,7 +11,6 @@ export default class Random {
   constructor() {
     this.execute = this.execute.bind(this);
     this.checkPoint = this.checkPoint.bind(this);
-    this.getUserByID = this.getUserByID.bind(this);
     this.randomNumber = this.randomNumber.bind(this);
     this.userRank = this.userRank.bind(this);
   }
@@ -52,10 +51,12 @@ export default class Random {
       );
 
       if (rolledNumber === num) {
-        user.point += 8;
+        const increaseAmount = this.randomNumber(10) + 14; // 15~25
+
+        user.point += increaseAmount;
 
         message.channel.send(
-          `축하드려요! 8점을 획득하셨네요${message.author.username}님!`
+          `축하드려요! ${increaseAmount}점을 획득하셨네요 <@!${message.author.id}>`
         );
       } else {
         const reduceAmount = this.randomNumber(5);
@@ -91,11 +92,6 @@ export default class Random {
     } catch (err) {
       logger.error(err);
     }
-  }
-
-  private getUserByID(guild: Guild, id: string) {
-    const guildMembers = guild.members.cache.find((usr) => usr.id === id);
-    return guildMembers;
   }
 
   private async userRank(message: Message) {
