@@ -29,6 +29,10 @@ export default class Random {
       return this.userRank(message);
     }
 
+    if (message.channel.type === 'dm') {
+      return message.reply('개인DM에서는 사용 할 수 없는 명령어입니다');
+    }
+
     const num = Number(args[0]);
 
     if (isNaN(num) || num < 1 || num > 6) {

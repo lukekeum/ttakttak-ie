@@ -39,7 +39,7 @@
     "winston": "^3.3.3"
   },
   "engines": {
-    "node": "15.8.0"
+    "node": "15.9.0"
   },
   "homepage": "http://ttakttak-ie.herokuapp.com/"
 }
