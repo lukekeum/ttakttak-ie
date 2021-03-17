@@ -10,7 +10,7 @@ export default class CheckUser {
     const author = message.author;
 
     try {
-      const user: IUser = await userModel.findOne({ id: author.id });
+      const user: IUser | null = await userModel.findOne({ id: author.id });
 
       if (message.author.bot) return;
       if (!user) return;

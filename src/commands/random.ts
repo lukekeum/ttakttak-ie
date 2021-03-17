@@ -44,10 +44,12 @@ export default class Random {
     const rolledNumber = this.randomNumber(6);
 
     try {
-      const user: IUser = await userModel.findOne({ id: message.author.id });
+      const user: IUser | null = await userModel.findOne({
+        id: message.author.id,
+      });
 
       if (!user) {
-        new CreateUser().execute(message);
+        return new CreateUser().execute(message);
       }
 
       message.channel.send(
@@ -84,7 +86,9 @@ export default class Random {
 
   private async checkPoint(message: Message) {
     try {
-      const user: IUser = await userModel.findOne({ id: message.author.id });
+      const user: IUser | null = await userModel.findOne({
+        id: message.author.id,
+      });
 
       if (!user) {
         return message.channel.send(`<@!${message.author.id}>님의 포인트: 0점`);
