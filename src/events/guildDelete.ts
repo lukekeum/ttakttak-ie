@@ -8,7 +8,9 @@ export default class GuildDelete {
   @Execute
   public async execute(guild: Guild) {
     try {
-      const targetGuild: IGuild = guildModel.find({ id: guild.id });
+      const targetGuild: IGuild | null = await guildModel.findOne({
+        id: guild.id,
+      });
 
       if (!targetGuild) return;
 

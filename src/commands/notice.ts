@@ -24,7 +24,11 @@ export default class Notice {
   @Execute
   public async execute(message: Message, args: TArguments) {
     try {
-      const user: IUser = await userModel.findOne({ id: message.author.id });
+      const user: IUser | null = await userModel.findOne({
+        id: message.author.id,
+      });
+
+      if (!user) return;
 
       if (!user.developer) return message.channel.send('You are not developer');
       if (!args || args.length < 1) return;
